@@ -1,6 +1,11 @@
 # encoding: utf-8
 from django.db import models
-
+from google.cloud import bigquery
+import os
+import json
+import csv
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_ROOT = "django-jquery-file-upload/media"
 
 class Picture(models.Model):
     """This is a small demo using just two fields. The slug field is really not
@@ -9,7 +14,7 @@ class Picture(models.Model):
     problems installing pillow, use a more generic FileField instead.
 
     """
-    file = models.ImageField(upload_to="pictures")
+    file = models.FileField(upload_to="pictures")
     slug = models.SlugField(max_length=50, blank=True)
 
     def __str__(self):
@@ -22,8 +27,45 @@ class Picture(models.Model):
     def save(self, *args, **kwargs):
         self.slug = self.file.name
         super(Picture, self).save(*args, **kwargs)
+        print("Uploading data to BIG Query")
+        self.upload_to_big_query(os.path.join( BASE_DIR, MEDIA_ROOT, self.file.name))
 
     def delete(self, *args, **kwargs):
         """delete -- Remove to leave file."""
         self.file.delete(False)
         super(Picture, self).delete(*args, **kwargs)
+
+    def parse_file(self, file_path):
+        data_rows = []
+        with open(file_path, 'rb') as csvfile:
+            r = csv.reader(csvfile, delimiter=',', quotechar='|')
+            header = next(r)
+            header = next(r)
+            header = next(r)
+            header = next(r)
+            header = next(r)
+            header = next(r)
+            for row in r:
+                row_item = {}
+                row_item["type"] = row[0]
+                row_item["start"] = row[1]
+                row_item["end"] = row[2]
+                row_item["usage"] = row[3]
+                row_item["units"] = row[4]
+                row_item["cost"] = row[5].replace("$", "")
+                data_rows.append(json.loads(json.dumps(row_item)))
+            return data_rows
+
+    def upload_to_big_query(self, file_path):
+        # DO CSV Stuff for content
+        rows = self.parse_file(file_path)
+        bigquery_client = bigquery.Client()
+        dataset_ref = bigquery_client.dataset("gbd_store")
+        table_ref = dataset_ref.table("pge")
+        table = bigquery_client.get_table(table_ref)
+        errors = bigquery_client.create_rows(table, rows)
+        if not errors:
+            print("Successfully uploaded data to big query")
+        else:
+            print("ERRORS:")
+            print(errors)
