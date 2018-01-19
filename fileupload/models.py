@@ -61,7 +61,7 @@ class Picture(models.Model):
         rows = self.parse_file(file_path)
         bigquery_client = bigquery.Client()
         dataset_ref = bigquery_client.dataset("gbd_store")
-        table_ref = dataset_ref.table("pge")
+        table_ref = dataset_ref.table("pge_slac")
         table = bigquery_client.get_table(table_ref)
         errors = bigquery_client.create_rows(table, rows)
         if not errors:
