@@ -45,6 +45,7 @@ class Picture(models.Model):
             header = next(r)
             header = next(r)
             header = next(r)
+            header = next(r)
             for row in r:
                 row_item = {}
                 row_item["type"] = row[0]
@@ -53,6 +54,8 @@ class Picture(models.Model):
                 row_item["usage"] = row[3]
                 row_item["units"] = row[4]
                 row_item["cost"] = row[5].replace("$", "")
+                row_item["zip"] = row[6]
+                print(row[6], row[5])
                 data_rows.append(json.loads(json.dumps(row_item)))
             return data_rows
 
@@ -61,7 +64,7 @@ class Picture(models.Model):
         rows = self.parse_file(file_path)
         bigquery_client = bigquery.Client()
         dataset_ref = bigquery_client.dataset("gbd_store")
-        table_ref = dataset_ref.table("pge_slac")
+        table_ref = dataset_ref.table("pge")
         table = bigquery_client.get_table(table_ref)
         errors = bigquery_client.create_rows(table, rows)
         if not errors:
