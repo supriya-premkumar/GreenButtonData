@@ -39,29 +39,30 @@ class Picture(models.Model):
         data_rows = []
         with open(file_path, 'rb') as csvfile:
             r = csv.reader(csvfile, delimiter=',', quotechar='|')
-            header = next(r)
-            header = next(r)
-            header = next(r)
-            header = next(r)
-            header = next(r)
-            header = next(r)
             for row in r:
-                row_item = {}
-                row_item["type"] = row[0]
-                row_item["start"] = row[1]
-                row_item["end"] = row[2]
-                row_item["usage"] = row[3]
-                row_item["units"] = row[4]
-                row_item["cost"] = row[5].replace("$", "")
-                data_rows.append(json.loads(json.dumps(row_item)))
+                if len(row) == 7 and "Electric usage" in row[0]:
+                    row_item = {}
+                    row_item["zip"] = zipcode
+                    row_item["type"] = row[0]
+                    row_item["date"] = row[1]
+                    row_item["start"] = row[2]
+                    row_item["end"] = row[3]
+                    row_item["usage"] = row[4]
+                    row_item["units"] = row[5]
+                    data_rows.append(json.loads(json.dumps(row_item)))
+                elif "Address" in row:
+                    zipcode = self.get_zipcode(row)
             return data_rows
+
+    def get_zipcode(self, address):
+        return address[-1].split()[1].strip('\"')
 
     def upload_to_big_query(self, file_path):
         # DO CSV Stuff for content
         rows = self.parse_file(file_path)
         bigquery_client = bigquery.Client()
         dataset_ref = bigquery_client.dataset("gbd_store")
-        table_ref = dataset_ref.table("pge_slac")
+        table_ref = dataset_ref.table("pge_electric")
         table = bigquery_client.get_table(table_ref)
         errors = bigquery_client.create_rows(table, rows)
         if not errors:
