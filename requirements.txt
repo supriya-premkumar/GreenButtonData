@@ -1,3 +1,4 @@
 django
 pillow
 google-cloud-bigquery
+social-auth-app-django
