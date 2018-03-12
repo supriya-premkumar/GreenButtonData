@@ -110,3 +110,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'django-jquery-file-upload', 'media')
  # 'login' and 'home' are the names of URLs in urls.py file
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY =''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''

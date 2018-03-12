@@ -6,8 +6,10 @@ from django.views.generic import CreateView, DeleteView, ListView
 from .models import Picture
 from .response import JSONResponse, response_mimetype
 from .serialize import serialize
+from django.shortcuts import render
 
-
+def home(request):
+    return render(request, 'picture_basic_form.html')
 class PictureCreateView(CreateView):
     model = Picture
     fields = "__all__"
