@@ -33,18 +33,36 @@
     </div>
 </div>
 <div class="container">
-    <h1>Data Commons Demo</h1>
-    <h2 class="lead">Donate your Data</h2>
+    <h1>Donate your Data for Science</h1>
+    <h2 class="lead">Data Commons</h2>
+    <h3 class="lead">[(A Stanford and SLAC Initiative)]</h3>
     <ul class="nav nav-tabs">
         <li class="active"><a href="/upload/basic">Utility Data</a></li>{% csrf_token %}
     </ul>
     <br>
     <blockquote>
-        <p>Please upload your usage data in CSV. You can find this data at PG&E portal -> Energy Usage Details -> Scroll Down -> Green Button Download my Data -> Export all bill totals | Format CSV -> Export</p>
+        <!-- <p>Please upload your usage data in CSV. You can find this data at PG&E portal -> Energy Usage Details -> Scroll Down -> Green Button Download my Data -> Export all bill totals | Format CSV -> Export</p> -->
+        <p>This website is developed to collect smart meter data from customers who are willing to share them with academic institutions for research purpose. </p><br>
+        <p>Your data will support research in the following areas</p>
+        <ul>
+          <li>Development of new and innovation load forecasting algorithms</li>
+          <li>Development of algorithms for better service delivery to consumers. This includes more customized energy efficiency and demand-side management services</li>
+          <li>Understanding correlations between electricity consumption and weather to better predict the impact of weather.</li>
+          <li>Development of tools that minimize utility bills and maximize the use of incentives for customers.</li>
+          <li>Studies around the design of dynamic rates, tariffs and incentives.</li>
+        </ul><br>
+
+        <p><b>We will keep your data private:</b> Your smart meter data contains the address where your meter is located.  We will anonymize your location data using secure hashing, keeping only your zip code so your stored data will not be user identifiable. We will need to keep your zip code because it will help us identify and use the appropriate weather data for your location. </p><br><br>
+
+        <p>Here are steps to upload your data if you are a PG&E customer (see corresponding screenshots below):</p><br>
           <!-- <a href="https://placeholder.com"><img src="http://via.placeholder.com/350x150"></a> -->
-          <img src="../../static/img/image2.jpeg" height="448" width="768" ><br>
-          <img src="../../static/img/image3.jpeg" height="256" width="1024" ><br>
-          <img src="../../static/img/image4.jpeg" height="384" width="1024" >
+          <ol type="1">
+            <li>Please upload your usage data in CSV.</li><br>
+            <img src="../../static/img/image2.jpeg" height="448" width="768" ><br>
+            <img src="../../static/img/image3.jpeg" height="256" width="1024" ><br>
+            <img src="../../static/img/image4.jpeg" height="384" width="1024" >
+            <li>Click on "Select files" button below to upload the downloaded file.
+          </ol>
         </br>
     </blockquote>
     <br>
@@ -64,19 +82,19 @@
     <!-- The container for the uploaded files -->
     <div id="files" class="files"></div>
     <br>
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <!-- <div class="panel panel-default"> -->
+        <!-- <div class="panel-heading">
             <h3 class="panel-title">How we intend to use your data</h3>
-        </div>
-        <div class="panel-body">
+        </div> -->
+        <!-- <div class="panel-body">
             <ul>
                 <li>Your data will be used for research purposes only at SLAC. The downloaded files from PG&E has home addresses. This data will be anonymized using secure hashing.</li>
                 <li>The persisted data will not be user identifiable.</li>
                 <li>For more details please <a href="http://slac.stanford.edu"> click here </a></li>
             </ul>
-        </div>
-    </div>
-</div>
+        </div> -->
+    <!-- </div> -->
+<!-- </div> -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 <script src="/static/js/vendor/jquery.ui.widget.js"></script>
